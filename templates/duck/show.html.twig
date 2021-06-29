@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Duck{% endblock %}
+
+{% block body %}
+
+        {{ include ('./navbar.html.twig') }}
+
+    <div class="example-wrapper">
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ duck.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ duck.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Duckname</th>
+                <td>{{ duck.duckname }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ duck.email }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a href="{{ path('duck_edit', {'id': duck.id}) }}" class="btn btn-primary">Modifier votre profil</a>
+    </div>
+{% endblock %}

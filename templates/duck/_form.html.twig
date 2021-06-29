@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+<div class="global-form">
+    <p>Prénom</p>
+    {{ form_widget(form.firstname) }}
+    <p>Nom</p>
+    {{ form_widget(form.lastname) }}
+    <p>Duckname</p>
+    {{ form_widget(form.duckname) }}
+    <p>Email</p>
+    {{ form_widget(form.email) }}
+    <p>Mot de passe</p>
+    {{ form_widget(form.password) }}
+
+</div>
+<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ duck.duckname }} {% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+        {{ include ('./navbar.html.twig') }}
+
+    {% for message in app.session.flashbag.get('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="example-wrapper">
+
+
+    {% if app.user and duck.id == app.user.id %}
+        <button type="button" class="btn btn-primary"><a href="/quack/new" style="color: white; text-decoration: none">Nouveau Quack</a></button>
+    {% endif %}
+        <div class="big-quacks-container">
+
+        {% for quack in duck.quacks %}
+            <div class="card" style="width: 18rem;">
+                <img src="{{ quack.picture }}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">{{ quack.author.duckname }}</h5>
+                    <p class="card-text">{{ quack.content }}</p>
+                    <div style="display: inline">
+                    {% for tag in quack.tags %}
+                        <span class="badge rounded-pill bg-info text-dark">{{ tag.name }}</span>
+                    {% endfor %}
+                    </div>
+                    <p class="date-quack-post"> {{ quack.createdAt ? quack.createdAt|ago(locale='fr')}}</p>
+                    <div style="display: inline-block">
+                        <a href="{{ path('quack_show', {'id': quack.id}) }}" class="btn btn-primary">Voir le
+                            Quack</a>
+                        <img class="ms-5" src="https://image.flaticon.com/icons/png/512/14/14578.png"
+                             style="width: 20px; height: 20px;" >
+                        <span class="badge bg-primary rounded-pill">{{ quack.comments.count }}</span>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+
+                <p>CoinCoin, vous n'avez pas encore de quacks</p>
+
+
+        {% endfor %}
+        </div>
+
+
+    </div>
+{% endblock %}

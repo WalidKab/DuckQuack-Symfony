@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} DuckQuack {% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+
+    <div class="navbar-home">
+
+        <nav class="navbar navbar-light bg-light ps-5 pe-5">
+            <div class="container-fluid">
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                </form>
+                {% if app.user %}
+                    <a href="{{ path('profil', {'id': app.user.id}) }}" class="btn btn-primary mon-profil-btn">
+                        Mon profil
+                    </a>
+                    <a href="{{ path('app_logout') }}">
+                        <button type="button" class="btn btn-secondary">Se déconnecter</button>
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_login') }}">
+                        <button type="button" class="btn btn-secondary">Se connecter</button>
+                    </a>
+                {% endif %}
+            </div>
+        </nav>
+
+        {% for message in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="big-container-home">
+
+            <div class="margin-home-container"></div>
+
+            <div class="big-quacks-container">
+
+                {% for quack in quacks %}
+                    <div class="card" style="width: 18rem;">
+                        <img src="{{ quack.picture }}" class="card-img-top" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ quack.author.duckname }}</h5>
+                            <p class="card-text">{{ quack.content }}</p>
+                            <div style="display: inline">
+                                {% for tag in quack.tags %}
+                                    <span class="badge rounded-pill bg-info text-dark">{{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <p class="date-quack-post"> {{ quack.createdAt ? quack.createdAt|ago(locale='fr') }}</p>
+                            <div style="display: inline-block">
+                                <a href="{{ path('quack_show', {'id': quack.id}) }}" class="btn btn-primary">Voir le
+                                    Quack</a>
+                                <img class="ms-5" src="https://image.flaticon.com/icons/png/512/14/14578.png"
+                                     style="width: 20px; height: 20px;" >
+                                <span class="badge bg-primary rounded-pill">{{ quack.comments.count }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <tr>
+                        <td colspan="4">CoinCoin, vous n'avez pas encore de quacks</td>
+                    </tr>
+                {% endfor %}
+            </div>
+
+            <div class="big-ducks-container">
+                <h3>Ducks</h3>
+
+                {% for duck in ducks %}
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" href="{{ path('profil', {'id': duck.id}) }}">
+                            <img src="{{ duck.image }}">
+                            {{ duck.duckname }}</a>
+                    </div>
+                {% endfor %}
+
+                <h3>Tags</h3>
+
+                {% for tag in tags %}
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action">{{ tag.name }}</a>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+<div class="navbar-profil">
+    <div class="box1">
+        {% if app.user %}
+        <img src="{{ app.user.image }}" class="profil-pic">
+        <h3>
+            {{ app.user.duckname }}
+        </h3>
+        {% endif %}
+    </div>
+
+    <div class="box2 navbar-box">
+        <nav class="nav nav-pills flex-column flex-sm-row">
+            <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="/">Accueil</a>
+            {% if app.user %}
+            <a class="flex-sm-fill text-sm-center nav-link" href="{{ path('profil', {'id': app.user.id}) }}">Profil</a>
+            <a class="flex-sm-fill text-sm-center nav-link" href="{{ path('duck_show', {'id': app.user.id}) }}">Gérer mon
+                profil</a>
+            {% endif %}
+        </nav>
+    </div>
+
+    <div class="box3 navbar-box">
+        <a href="{{ path('app_logout') }}">
+            <button type="button" class="btn btn-secondary">Se déconnecter</button>
+        </a>
+    </div>
+</div>
