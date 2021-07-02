@@ -6,42 +6,44 @@
     {{ include ('./navbar.html.twig') }}
 
     <div class="example-wrapper">
-        <div class="post-show">
-            <span class="post-author"> {{ quack.author.duckname }} </span>
-            <span class="post-timeago">{{ quack.createdAt|ago(locale='fr') }}</span>
-            <p class="post-content">{{ quack.content }}</p>
-            <img class="post-picture" src="{{ quack.picture }}">
+    <div class="post-show">
+    <span class="post-author"> {{ quack.author.duckname }} </span>
+    <span class="post-timeago">{{ quack.createdAt|ago(locale='fr') }}</span>
+    <p class="post-content">{{ quack.content }}</p>
+    <img class="post-picture" src="{{ quack.picture }}">
 
-            {% if app.user %}
+    {% if app.user %}
 
-            {% if app.user.id == quack.author.id %}
-                {{ include('quack/_delete_form.html.twig') }}
-                <a class="btn btn-danger edit-post" href="{{ path('quack_edit', {'id': quack.id}) }}">edit</a>
-            {% endif %}
+        {% if app.user.id == quack.author.id %}
+            {{ include('quack/_delete_form.html.twig') }}
+            <form class="edit-post" action="{{ path('quack_edit', {'id': quack.id}) }}" method="get">
+                <button class="btn btn-danger " type="submit">Modifier</button>
+            </form>
+        {% endif %}
         </div>
-        <div class="section-bar"></div>
+        <div class="section-bar" style="color: #f1f2f3"></div>
 
         {{ form_start(commentsForm) }}
-        <p>Votre commentaire</p>
+        <p style="color: #f1f2f3">Votre commentaire</p>
         {{ form_widget(commentsForm.content) }}
         <button style="margin-top: 1rem" class="btn btn-success">{{ button_label|default('Envoyer') }}</button>
         {{ form_end(commentsForm) }}
-        {% else %}
-            </div>
-        {% endif %}
-        <div class="section-bar"></div>
+    {% else %}
+        </div>
+    {% endif %}
+    <div class="section-bar" style="color: #f1f2f3"></div>
 
-        {% for comment in quack.comments %}
-            <div class="display-comment">
-                <p>{{ comment.duck.duckname }}</p>
-                <p class="post-timeago" style="text-align: end">{{ comment.postedAt|ago(locale='fr') }}</p>
-                <p class="content">{{ comment.content }}</p>
-            </div>
-            {% if (app.user and app.user.id == quack.author.id) or (app.user and app.user.id == comment.duck.id) %}
-                {{ include('comment/_delete_form.html.twig') }}
-            {% endif %}
-            <div class="section-bar"></div>
-        {% endfor %}
+    {% for comment in quack.comments %}
+        <div class="display-comment" style="color: #f1f2f3">
+            <p>{{ comment.duck.duckname }}</p>
+            <p class="post-timeago" style="text-align: end">{{ comment.postedAt|ago(locale='fr') }}</p>
+            <p class="content">{{ comment.content }}</p>
+        </div>
+        {% if (app.user and app.user.id == quack.author.id) or (app.user and app.user.id == comment.duck.id) %}
+            {{ include('comment/_delete_form.html.twig') }}
+        {% endif %}
+        <div class="section-bar" style="color: #f1f2f3"></div>
+    {% endfor %}
 
     </div>
 {% endblock %}

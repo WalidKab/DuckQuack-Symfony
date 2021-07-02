@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\AvailableReaction;
 use App\Entity\Comment;
 use App\Entity\Duck;
 use App\Entity\Quack;
+use App\Entity\Reaction;
 use App\Entity\Tag;
 use App\Form\CommentFormType;
 use App\Form\QuackType;
 use App\Repository\DuckRepository;
 use App\Repository\QuackRepository;
+use App\Repository\ReactionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,15 +23,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class QuackController extends AbstractController
 {
-    /**
-     * @Route("/", name="quack_index", methods={"GET"})
-     */
-    public function index(QuackRepository $quackRepository): Response
-    {
-        return $this->render('quack/index.html.twig', [
-            'quacks' => $quackRepository->findAll(),
-        ]);
-    }
+//    /**
+//     * @Route("/", name="quack_index", methods={"GET"})
+//     */
+//    public function index(QuackRepository $quackRepository): Response
+//    {
+//        return $this->render('quack/index.html.twig', [
+//            'quacks' => $quackRepository->findAll(),
+//        ]);
+//    }
 
     /**
      * @Route("/new", name="quack_new", methods={"GET","POST"})
@@ -57,8 +60,9 @@ class QuackController extends AbstractController
     /**
      * @Route("/{id}", name="quack_show", methods={"GET","POST"})
      */
-    public function show(Quack $quack, Request $request): Response
+    public function show(Quack $quack, Request $request, ReactionRepository $reactionRepository): Response
     {
+        dump($reactionRepository->getQuackStatistics($quack));
         $comment = new Comment();
         $comment->setQuack($quack);
         $comment->setDuck($this->getUser());
@@ -94,7 +98,7 @@ class QuackController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('quack_index');
+            return $this->redirectToRoute('quack_show', ['id'=>$quack->getId()]);
         }
 
         return $this->render('quack/edit.html.twig', [
@@ -131,4 +135,31 @@ class QuackController extends AbstractController
 
         return $this->redirectToRoute('quack_show', ['id'=>$previousQuack]);
     }
+
+    /**
+     * @Route("/{quack}/reaction/{availableReaction}", name="reaction_manager", methods={"GET"})
+     */
+    public function manageReaction(Quack $quack,ReactionRepository $reactionRepository,AvailableReaction $availableReaction)
+    {
+        //dump(func_get_args());
+        $entityManager = $this->getDoctrine()->getManager();
+        $reaction = $reactionRepository->findOneBy(['quack'=> $quack, 'duck'=>$this->getUser()]);
+        if (!$reaction)
+        {
+            $reaction = new Reaction();
+            $reaction->setQuack($quack);
+            $reaction->setDuck($this->getUser());
+            $entityManager->persist($reaction);
+        }
+        if ($reaction->getAvailableReaction() === $availableReaction)
+        {
+            $entityManager->remove($reaction);
+        }
+        $reaction->setAvailableReaction($availableReaction);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home');
+    }
+
+
 }

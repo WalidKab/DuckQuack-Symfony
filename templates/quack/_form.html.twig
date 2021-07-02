@@ -1,7 +1,14 @@
 {{ form_start(form) }}
-<div>
-    {{ form_row(form) }}
+<div class="main-content-edit">
+
+    <p>Contenu</p>
+    {{ form_widget(form.content) }}
+    <p style="padding-top: 50px">Photo</p>
+    {{ form_widget(form.picture) }}
+    <p style="padding-top: 50px">Tags</p>
+    {{ form_widget(form.tags) }}
+
 </div>
 
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary btn-edit">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

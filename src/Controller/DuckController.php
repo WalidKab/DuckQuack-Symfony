@@ -17,15 +17,15 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class DuckController extends AbstractController
 {
-    /**
-     * @Route("/", name="duck_index", methods={"GET"})
-     */
-    public function index(DuckRepository $duckRepository): Response
-    {
-        return $this->render('duck/index.html.twig', [
-            'ducks' => $duckRepository->findAll(),
-        ]);
-    }
+//    /**
+//     * @Route("/", name="duck_index", methods={"GET"})
+//     */
+//    public function index(DuckRepository $duckRepository): Response
+//    {
+//        return $this->render('duck/index.html.twig', [
+//            'ducks' => $duckRepository->findAll(),
+//        ]);
+//    }
 
     /**
      * @Route("/new", name="duck_new", methods={"GET","POST"})

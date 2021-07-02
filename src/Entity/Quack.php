@@ -50,13 +50,20 @@ class Quack
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Reaction::class, mappedBy="quack", orphanRemoval=true)
+     */
+    private $reactions;
+
+    public $statistics=[];
+
     public function __construct(Duck $duck)
     {
         $this->author= $duck;
         $this->created_at= new \DateTime();
-        $this->tag = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->reactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +170,36 @@ class Quack
             // set the owning side to null (unless already changed)
             if ($comment->getQuack() === $this) {
                 $comment->setQuack(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reaction[]
+     */
+    public function getReactions(): Collection
+    {
+        return $this->reactions;
+    }
+
+    public function addReaction(Reaction $reaction): self
+    {
+        if (!$this->reactions->contains($reaction)) {
+            $this->reactions[] = $reaction;
+            $reaction->setQuack($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReaction(Reaction $reaction): self
+    {
+        if ($this->reactions->removeElement($reaction)) {
+            // set the owning side to null (unless already changed)
+            if ($reaction->getQuack() === $this) {
+                $reaction->setQuack(null);
             }
         }
 

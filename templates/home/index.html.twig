@@ -54,11 +54,25 @@
                                 {% endfor %}
                             </div>
                             <p class="date-quack-post"> {{ quack.createdAt ? quack.createdAt|ago(locale='fr') }}</p>
+                            <div style="display: flex; margin-bottom: 5px">
+                                {% for availableReaction in availableReactions %}
+                                    <div style="display: flex; flex-direction: column; margin-right: 10px">
+                                        <a style="text-decoration: none"
+                                           href="{{ path('reaction_manager', {'quack':quack.id,'availableReaction':availableReaction.id}) }}">{{ availableReaction.emoji }}</a>
+                                        {% for reaction in quack.statistics %}
+                                            {% if reaction.emoji == availableReaction.emoji  %}
+                                                <span class="badge rounded-pill bg-info text-dark" id="{{ reaction.emoji }}">{{ reaction.cnt }}</span>
+                                            {% endif %}
+
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            </div>
                             <div style="display: inline-block">
                                 <a href="{{ path('quack_show', {'id': quack.id}) }}" class="btn btn-primary">Voir le
                                     Quack</a>
                                 <img class="ms-5" src="https://image.flaticon.com/icons/png/512/14/14578.png"
-                                     style="width: 20px; height: 20px;" >
+                                     style="width: 20px; height: 20px;">
                                 <span class="badge bg-primary rounded-pill">{{ quack.comments.count }}</span>
                             </div>
                         </div>

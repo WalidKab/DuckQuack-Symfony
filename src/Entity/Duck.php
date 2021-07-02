@@ -69,10 +69,17 @@ class Duck implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Reaction::class, mappedBy="duck", orphanRemoval=true)
+     */
+    private $reactions;
+
     public function __construct()
     {
         $this->quacks = new ArrayCollection();
         $this->comments = new ArrayCollection();
+//        $this->roles = "ROLE_USER" ;
+$this->reactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -269,6 +276,36 @@ class Duck implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getDuck() === $this) {
                 $comment->setDuck(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reaction[]
+     */
+    public function getReactions(): Collection
+    {
+        return $this->reactions;
+    }
+
+    public function addReaction(Reaction $reaction): self
+    {
+        if (!$this->reactions->contains($reaction)) {
+            $this->reactions[] = $reaction;
+            $reaction->setDuck($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReaction(Reaction $reaction): self
+    {
+        if ($this->reactions->removeElement($reaction)) {
+            // set the owning side to null (unless already changed)
+            if ($reaction->getDuck() === $this) {
+                $reaction->setDuck(null);
             }
         }
 

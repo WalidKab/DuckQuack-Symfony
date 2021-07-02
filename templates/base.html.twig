@@ -9,6 +9,25 @@
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     {% block stylesheets %}
         <style>
+            body{
+                background: linear-gradient( white, #2dbdfd 20%, #00006a );
+            }
+
+            .tt-les-btn{
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+            }
+
+            .btn-edit{
+                margin-left: 5px;
+            }
+
+            .main-content-edit{
+                margin: 170px ;
+                color: #f1f2f3;
+            }
+
             .example-wrapper {
                 margin: 1em auto;
                 max-width: 900px;
@@ -27,6 +46,7 @@
                 grid-template-columns: 15% 35% 35% 15%;
                 grid-template-rows: 10% auto auto 10%;
                 margin: 0% 20% 0% 20%;
+                color: #f1f2f3;
             }
 
             .delete-post {
@@ -35,6 +55,7 @@
                 grid-row-start: 4;
                 grid-row-end: 5;
                 margin: 5px;
+                justify-self: center;
             }
 
             .post-author{
@@ -42,7 +63,7 @@
                 grid-column-end: 3;
                 grid-row-start: 1;
                 grid-row-end: 2;
-                font-size: small;
+                font-size: 20px;
             }
 
             .post-timeago{
@@ -59,7 +80,10 @@
                 grid-row-start: 4;
                 grid-row-end: 5;
                 margin: 5px;
+                justify-self: center;
             }
+
+
 
             .post-content {
                 grid-column-start: 2;
@@ -103,7 +127,22 @@
             }
 
             .card {
-                margin-bottom: 1rem;
+                margin-bottom: 3rem;
+                border-radius: 20px;
+            }
+
+            .card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 105%;
+                width: 105%;
+                background: linear-gradient(90deg, #363EA0, #3278D8, #59BFD7);
+                filter: blur(20px);
+                border-radius: 40px;
+                z-index: -1;
+                /*transform: rotate(6deg);*/
             }
 
             .big-quacks-container {
@@ -116,6 +155,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
+
             }
 
             .card-img-top {

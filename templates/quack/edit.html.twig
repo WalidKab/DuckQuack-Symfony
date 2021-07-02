@@ -3,11 +3,17 @@
 {% block title %}Edit Quack{% endblock %}
 
 {% block body %}
-    <h1>Edit Quack</h1>
 
-    {{ include('quack/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('quack_index') }}">Retour</a>
+    <h1 style="text-align: center; margin-top: 50px">Modifier votre Quack</h1>
 
-    {{ include('quack/_delete_form.html.twig') }}
+    <div class="main-content-edit">
+        <div class="edit-quack">
+            {{ include('quack/_form.html.twig', {'button_label': 'Modifier'}) }}
+        </div>
+        <div class="tt-les-btn">
+            {{ include('quack/_delete_form.html.twig') }}
+            <a href="{{ path('quack_show', {'id': quack.id}) }}" style="color: white; text-decoration: none">Retour</a>
+        </div>
+    </div>
 {% endblock %}
